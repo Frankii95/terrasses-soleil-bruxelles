@@ -9,6 +9,19 @@ import './App.css';
 
 const STATUS_ORDER = { sunny: 0, partial: 1, shade: 2 };
 
+// WMO weather code → emojis + label
+function getWeatherInfo(code) {
+  if (code === 0)            return { emojis: '☀️☀️🌞', label: 'Ensoleillé' };
+  if (code <= 2)             return { emojis: '🌤️☀️⛅', label: 'Peu nuageux' };
+  if (code === 3)            return { emojis: '☁️☁️⛅', label: 'Nuageux' };
+  if (code <= 48)            return { emojis: '🌫️🌫️🌫️', label: 'Brouillard' };
+  if (code <= 55)            return { emojis: '🌦️💧🌦️', label: 'Bruine' };
+  if (code <= 65)            return { emojis: '🌧️💧☔', label: 'Pluvieux' };
+  if (code <= 77)            return { emojis: '❄️🌨️❄️', label: 'Neige' };
+  if (code <= 82)            return { emojis: '🌧️⛈️☔', label: 'Averses' };
+  return                            { emojis: '⛈️⚡🌩️', label: 'Orage' };
+}
+
 // Time-of-day context
 function getMomentIdeal(hour) {
   if (hour < 9)  return { label: 'un café au soleil',        emoji: '☕' };
@@ -135,6 +148,15 @@ export default function App() {
     return () => clearInterval(id);
   }, []);
 
+  // Brussels weather (Open-Meteo, no key required)
+  const [weather, setWeather] = useState(null);
+  useEffect(() => {
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=50.85&longitude=4.35&current=weather_code&timezone=Europe%2FBrussels')
+      .then(r => r.json())
+      .then(d => setWeather(getWeatherInfo(d.current.weather_code)))
+      .catch(() => {});
+  }, []);
+
   const handleBarClick = useCallback((bar) => {
     setHighlightedBarId(bar.id);
     setActiveTab('list');
@@ -145,22 +167,21 @@ export default function App() {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#F7F4EE' }}>
 
       {/* ─── HEADER ─── */}
-      <header style={{
+      <header className="app-header" style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '11px 20px',
+        padding: '11px 20px', gap: '10px',
         borderBottom: '1px solid rgba(0,0,0,0.07)',
-        flexShrink: 0,
-        background: '#F7F4EE',
-        zIndex: 100,
+        flexShrink: 0, background: '#F7F4EE', zIndex: 100,
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{
-            width: 30, height: 30, borderRadius: '9px',
+        {/* Logo + title */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+          <div className="header-logo" style={{
+            width: 28, height: 28, borderRadius: '8px',
             background: 'linear-gradient(135deg, #F59E0B, #EA580C)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             flexShrink: 0, boxShadow: '0 3px 10px rgba(245,158,11,0.3)',
           }}>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
               <circle cx="8" cy="8" r="3.5" fill="white" />
               {[0, 60, 120, 180, 240, 300].map((deg) => {
                 const rad = (deg * Math.PI) / 180;
@@ -169,44 +190,41 @@ export default function App() {
             </svg>
           </div>
           <div>
-            <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '13px', fontWeight: 700, color: '#1C1917', letterSpacing: '-0.03em', lineHeight: 1.2 }}>
-              Pti verre en<br />Terrasse ?
+            <div className="header-title" style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, color: '#1C1917', letterSpacing: '0.04em', lineHeight: 1.15, textTransform: 'uppercase' }}>
+              Pti verre en Terrasse
             </div>
-            <div style={{ fontSize: '9.5px', color: '#A8A29E', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500 }}>
+            <div style={{ fontSize: '7px', color: '#A8A29E', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 500 }}>
               Bruxelles
             </div>
           </div>
         </div>
 
-        {/* Status pill */}
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: '7px',
-          background: sunnyBars.length > 0 ? '#FEF3C7' : '#F3F4F6',
-          border: `1px solid ${sunnyBars.length > 0 ? '#FDE68A' : '#E5E7EB'}`,
-          borderRadius: '20px', padding: '5px 12px',
-        }}>
-          <div style={{
-            width: 6, height: 6, borderRadius: '50%',
-            background: sunnyBars.length > 0 ? '#D97706' : '#9CA3AF',
-          }} />
-          <span style={{ fontSize: '11.5px', fontWeight: 600, color: sunnyBars.length > 0 ? '#92400E' : '#6B7280' }}>
-            {sunnyBars.length} terrasse{sunnyBars.length !== 1 ? 's' : ''} ensoleillée{sunnyBars.length !== 1 ? 's' : ''}
-          </span>
-          <span style={{ fontSize: '10px', color: '#C4B5A5' }}>/ {bars.length}</span>
-        </div>
+        {/* Weather pill */}
+        {weather && (
+          <div className="status-pill" style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center',
+            background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.07)',
+            borderRadius: '14px', padding: '4px 10px', flexShrink: 0,
+          }}>
+            <span style={{ fontSize: '14px', lineHeight: 1, letterSpacing: '1px' }}>{weather.emojis}</span>
+            <span className="pill-text" style={{ fontSize: '8px', fontWeight: 600, color: '#78716C', textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '2px', whiteSpace: 'nowrap' }}>
+              {weather.label}
+            </span>
+          </div>
+        )}
 
         {/* Mobile toggle */}
-        <div className="mobile-tabs" style={{ display: 'none', background: '#EDE9E3', borderRadius: '9px', padding: '3px' }}>
+        <div className="mobile-tabs" style={{ display: 'none', background: '#EDE9E3', borderRadius: '9px', padding: '3px', flexShrink: 0 }}>
           {['map', 'list'].map((tab) => (
             <button key={tab} onClick={() => setActiveTab(tab)} style={{
-              padding: '4px 11px', borderRadius: '7px', border: 'none', cursor: 'pointer',
+              padding: '4px 10px', borderRadius: '7px', border: 'none', cursor: 'pointer',
               fontSize: '11px', fontWeight: 600, fontFamily: 'DM Sans, sans-serif',
               background: activeTab === tab ? '#FFFFFF' : 'transparent',
               color: activeTab === tab ? '#92400E' : '#A8A29E',
               boxShadow: activeTab === tab ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
               transition: 'all 0.2s',
             }}>
-              {tab === 'map' ? 'Carte' : 'Liste'}
+              {tab === 'map' ? 'CARTE' : 'LISTE'}
             </button>
           ))}
         </div>
@@ -428,8 +446,11 @@ export default function App() {
 
             {/* Shaded bars footer */}
             {shadeBars.length > 0 && (
-              <div style={{ padding: '8px 22px', borderTop: '1px solid rgba(0,0,0,0.05)', fontSize: '10.5px', color: '#C4B5A5', flexShrink: 0 }}>
-                + {shadeBars.length} terrasse{shadeBars.length !== 1 ? 's' : ''} à l'ombre
+              <div style={{ padding: '8px 22px', borderTop: '1px solid rgba(0,0,0,0.05)', fontSize: '10.5px', color: '#C4B5A5', flexShrink: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span>+ {shadeBars.length} terrasse{shadeBars.length !== 1 ? 's' : ''} à l'ombre</span>
+                <span style={{ color: sunnyBars.length > 0 ? '#D97706' : '#C4B5A5' }}>
+                  {sunnyBars.length} ☀ / {bars.length} terrasses
+                </span>
               </div>
             )}
           </div>
@@ -447,6 +468,17 @@ export default function App() {
           .cards-panel {
             display: ${activeTab === 'list' ? 'flex' : 'none'} !important;
             flex: 1 1 auto !important;
+          }
+          header {
+            padding: 8px 12px !important;
+            gap: 8px !important;
+          }
+          .header-title {
+            font-size: 10px !important;
+          }
+          .pill-text {
+            font-size: 10px !important;
+            max-width: 90px;
           }
         }
       `}</style>
