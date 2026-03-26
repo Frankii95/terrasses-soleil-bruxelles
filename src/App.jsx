@@ -39,7 +39,7 @@ export default function App() {
     return now;
   });
 
-  const [activeTab, setActiveTab] = useState('map');
+  const [activeTab, setActiveTab] = useState('list');
   const [highlightedBarId, setHighlightedBarId] = useState(null);
   const [filterType, setFilterType] = useState('tous');
   const [drinkSlide, setDrinkSlide] = useState(0); // 0=café 1=bière 2=vin 3=cocktail
