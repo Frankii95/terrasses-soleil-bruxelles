@@ -345,24 +345,31 @@ export default function App() {
                 <div style={{ fontSize: '9.5px', color: '#A8A29E', textTransform: 'uppercase', letterSpacing: '0.07em', fontWeight: 600, marginBottom: '5px' }}>
                   Tu as le temps pour
                 </div>
-                <AnimatePresence mode="wait">
-                  {drinkSlide === 0 && (
-                    <DrinkSlide key="cafe" count={sunInfo.cafeCount} singular="café" plural="cafés" emoji="☕"
-                      sub={sunInfo.cafeCount > 0 ? 'avant midi · ~20 min chacun' : 'Midi est passé'} />
-                  )}
-                  {drinkSlide === 1 && (
-                    <DrinkSlide key="biere" count={sunInfo.biereCount} singular="bière" plural="bières" emoji="🍺"
-                      sub={sunInfo.biereCount > 0 ? 'avant le coucher · ~30 min chacune' : 'Soleil couché 🌙'} />
-                  )}
-                  {drinkSlide === 2 && (
-                    <DrinkSlide key="vin" count={sunInfo.vinCount} singular="verre de vin" plural="verres de vin" emoji="🍷"
-                      sub={sunInfo.vinCount > 0 ? 'avant le coucher · ~25 min chacun' : 'Soleil couché 🌙'} />
-                  )}
-                  {drinkSlide === 3 && (
-                    <DrinkSlide key="cocktail" count={sunInfo.cocktailCount} singular="cocktail" plural="cocktails" emoji="🍹"
-                      sub={sunInfo.cocktailCount > 0 ? 'avant le coucher · ~35 min chacun' : 'Soleil couché 🌙'} />
-                  )}
-                </AnimatePresence>
+                {!sunInfo.isSunUp ? (
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '2px' }}>
+                    <span style={{ fontSize: '22px' }}>😴</span>
+                    <span style={{ fontSize: '14px', fontWeight: 600, color: '#1C1917' }}>dormir</span>
+                  </div>
+                ) : (
+                  <AnimatePresence mode="wait">
+                    {drinkSlide === 0 && (
+                      <DrinkSlide key="cafe" count={sunInfo.cafeCount} singular="café" plural="cafés" emoji="☕"
+                        sub={sunInfo.cafeCount > 0 ? 'avant midi · ~20 min chacun' : 'Midi est passé'} />
+                    )}
+                    {drinkSlide === 1 && (
+                      <DrinkSlide key="biere" count={sunInfo.biereCount} singular="bière" plural="bières" emoji="🍺"
+                        sub={sunInfo.biereCount > 0 ? 'avant le coucher · ~30 min chacune' : 'Soleil couché 🌙'} />
+                    )}
+                    {drinkSlide === 2 && (
+                      <DrinkSlide key="vin" count={sunInfo.vinCount} singular="verre de vin" plural="verres de vin" emoji="🍷"
+                        sub={sunInfo.vinCount > 0 ? 'avant le coucher · ~25 min chacun' : 'Soleil couché 🌙'} />
+                    )}
+                    {drinkSlide === 3 && (
+                      <DrinkSlide key="cocktail" count={sunInfo.cocktailCount} singular="cocktail" plural="cocktails" emoji="🍹"
+                        sub={sunInfo.cocktailCount > 0 ? 'avant le coucher · ~35 min chacun' : 'Soleil couché 🌙'} />
+                    )}
+                  </AnimatePresence>
+                )}
               </div>
             </div>
           </div>
