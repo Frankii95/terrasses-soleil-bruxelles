@@ -419,8 +419,8 @@ export default function App() {
                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                     style={{ textAlign: 'center', padding: '48px 20px', color: '#C4B5A5' }}
                   >
-                    <div style={{ fontSize: '36px', marginBottom: '10px' }}>🌑</div>
-                    <div style={{ fontSize: '13px', fontWeight: 500, color: '#78716C' }}>Aucune terrasse ensoleillée</div>
+                    <div style={{ fontSize: '36px', marginBottom: '10px' }}>🌚🌝</div>
+                    <div style={{ fontSize: '13px', fontWeight: 500, color: '#78716C' }}>Plus de terrasse ensoleillée à cette heure-ci, bonne nuit !</div>
                     <div style={{ fontSize: '11.5px', marginTop: '5px' }}>Essayez un autre horaire</div>
                   </motion.div>
                 ) : (
