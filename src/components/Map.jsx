@@ -3,8 +3,8 @@ import L from 'leaflet';
 import { getSunStatus, getSunTagline, getSunPosition } from '../utils/sunCalc';
 
 const BRUSSELS_CENTER = [50.845, 4.358];
-const STADIA_DARK_URL = 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png';
-const STADIA_ATTRIBUTION = '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="https://openstreetmap.org">OpenStreetMap</a>';
+const CARTO_DARK_URL = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+const CARTO_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
 function createPinSVG(status) {
   const colors = {
@@ -144,8 +144,8 @@ export default function Map({ bars, selectedDate, onBarClick }) {
 
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-    tileLayerRef.current = L.tileLayer(STADIA_DARK_URL, {
-      attribution: STADIA_ATTRIBUTION,
+    tileLayerRef.current = L.tileLayer(CARTO_DARK_URL, {
+      attribution: CARTO_ATTRIBUTION,
       maxZoom: 18,
     }).addTo(map);
 
