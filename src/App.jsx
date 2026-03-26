@@ -169,7 +169,7 @@ export default function App() {
             </svg>
           </div>
           <div>
-            <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '15px', fontWeight: 700, color: '#1C1917', letterSpacing: '-0.01em', lineHeight: 1.1 }}>
+            <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '13px', fontWeight: 700, color: '#1C1917', letterSpacing: '-0.03em', lineHeight: 1.1, whiteSpace: 'nowrap' }}>
               Pti verre en Terrasse ?
             </div>
             <div style={{ fontSize: '9.5px', color: '#A8A29E', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500 }}>
