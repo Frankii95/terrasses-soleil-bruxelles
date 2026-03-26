@@ -444,6 +444,22 @@ export default function App() {
               </AnimatePresence>
             </div>
 
+            {/* Tip banner */}
+            <div style={{
+              margin: '0 14px 10px',
+              padding: '8px 12px',
+              background: '#FFFBEB',
+              border: '1px solid #FDE68A',
+              borderRadius: '12px',
+              display: 'flex', alignItems: 'center', gap: '8px',
+              flexShrink: 0,
+            }}>
+              <span style={{ fontSize: '15px', flexShrink: 0 }}>💡</span>
+              <span style={{ fontSize: '10.5px', color: '#92400E', lineHeight: 1.4 }}>
+                Utilise le <strong>slider en haut</strong> pour planifier ta sortie en terrasse !
+              </span>
+            </div>
+
             {/* Shaded bars footer */}
             {shadeBars.length > 0 && (
               <div style={{ padding: '8px 22px', borderTop: '1px solid rgba(0,0,0,0.05)', fontSize: '10.5px', color: '#C4B5A5', flexShrink: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
