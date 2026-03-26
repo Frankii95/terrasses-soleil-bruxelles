@@ -20,16 +20,16 @@ html, body {
 
 /* Leaflet overrides */
 .leaflet-container {
-  background: #0d1117 !important;
+  background: #E8E0D5 !important;
 }
 
 .leaflet-popup-content-wrapper {
-  background: rgba(17, 24, 39, 0.97) !important;
+  background: rgba(247, 244, 238, 0.97) !important;
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
   border-radius: 16px !important;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
-  color: #F8F9FF !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+  color: #1C1917 !important;
   padding: 0 !important;
 }
 
@@ -43,7 +43,7 @@ html, body {
 }
 
 .leaflet-popup-close-button {
-  color: rgba(255,255,255,0.4) !important;
+  color: rgba(0,0,0,0.3) !important;
   font-size: 20px !important;
   top: 10px !important;
   right: 12px !important;
@@ -53,25 +53,25 @@ html, body {
 }
 
 .leaflet-popup-close-button:hover {
-  color: #F8F9FF !important;
+  color: #1C1917 !important;
   background: none !important;
 }
 
 .leaflet-control-zoom {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
   border-radius: 12px !important;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
   margin-bottom: 12px !important;
   margin-right: 12px !important;
 }
 
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out {
-  background: rgba(17, 24, 39, 0.95) !important;
-  color: rgba(255,255,255,0.7) !important;
+  background: rgba(247, 244, 238, 0.95) !important;
+  color: rgba(0,0,0,0.5) !important;
   border: none !important;
-  border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+  border-bottom: 1px solid rgba(0,0,0,0.06) !important;
   width: 36px !important;
   height: 36px !important;
   line-height: 36px !important;
@@ -81,20 +81,20 @@ html, body {
 
 .leaflet-control-zoom-in:hover,
 .leaflet-control-zoom-out:hover {
-  background: rgba(255, 213, 79, 0.1) !important;
-  color: #FFD54F !important;
+  background: #FEF3C7 !important;
+  color: #D97706 !important;
 }
 
 .leaflet-control-attribution {
-  background: rgba(10, 15, 30, 0.7) !important;
-  color: rgba(255, 255, 255, 0.25) !important;
+  background: rgba(247, 244, 238, 0.8) !important;
+  color: rgba(0, 0, 0, 0.3) !important;
   font-size: 9px !important;
   border-radius: 6px 0 0 0 !important;
   padding: 2px 6px !important;
 }
 
 .leaflet-control-attribution a {
-  color: rgba(255, 213, 79, 0.4) !important;
+  color: #D97706 !important;
 }
 
 /* Custom scrollbar */

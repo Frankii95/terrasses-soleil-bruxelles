@@ -3,14 +3,14 @@ import L from 'leaflet';
 import { getSunStatus, getSunTagline, getSunPosition } from '../utils/sunCalc';
 
 const BRUSSELS_CENTER = [50.845, 4.358];
-const CARTO_DARK_URL = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+const CARTO_LIGHT_URL = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
 const CARTO_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
 function createPinSVG(status) {
   const colors = {
     sunny: { fill: '#FFD54F', stroke: '#F57F17', glow: 'rgba(255,213,79,0.5)' },
     partial: { fill: '#FF9800', stroke: '#E65100', glow: 'rgba(255,152,0,0.4)' },
-    shade: { fill: '#374151', stroke: '#1F2937', glow: 'transparent' },
+    shade: { fill: '#D1D5DB', stroke: '#9CA3AF', glow: 'transparent' },
   };
   const c = colors[status] || colors.shade;
 
@@ -56,13 +56,13 @@ function createPopupContent(bar, status, date) {
       padding: 18px 20px 16px;
       min-width: 220px;
       font-family: 'DM Sans', sans-serif;
-      color: #F8F9FF;
+      color: #1C1917;
     ">
       <div style="
         font-size: 11px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: rgba(255,255,255,0.35);
+        color: #A8A29E;
         margin-bottom: 4px;
         font-weight: 500;
       ">${bar.neighborhood}</div>
@@ -79,8 +79,8 @@ function createPopupContent(bar, status, date) {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        background: rgba(255,255,255,0.06);
-        border: 1px solid rgba(255,255,255,0.1);
+        background: rgba(0,0,0,0.04);
+        border: 1px solid rgba(0,0,0,0.08);
         border-radius: 20px;
         padding: 4px 10px;
         margin-bottom: 10px;
@@ -89,7 +89,6 @@ function createPopupContent(bar, status, date) {
           width: 7px; height: 7px;
           border-radius: 50%;
           background: ${s.color};
-          box-shadow: 0 0 8px ${s.color}80;
           display: inline-block;
           flex-shrink: 0;
         "></span>
@@ -104,18 +103,18 @@ function createPopupContent(bar, status, date) {
 
       <div style="
         font-size: 12px;
-        color: rgba(255,255,255,0.55);
+        color: #78716C;
         line-height: 1.4;
       ">${tagline}</div>
 
       <div style="
         margin-top: 12px;
         padding-top: 10px;
-        border-top: 1px solid rgba(255,255,255,0.06);
+        border-top: 1px solid rgba(0,0,0,0.06);
         display: flex;
         gap: 12px;
         font-size: 10px;
-        color: rgba(255,255,255,0.25);
+        color: #C4B5A5;
         letter-spacing: 0.04em;
       ">
         <span>Terrasse ${bar.orientation}</span>
@@ -144,7 +143,7 @@ export default function Map({ bars, selectedDate, onBarClick }) {
 
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-    tileLayerRef.current = L.tileLayer(CARTO_DARK_URL, {
+    tileLayerRef.current = L.tileLayer(CARTO_LIGHT_URL, {
       attribution: CARTO_ATTRIBUTION,
       maxZoom: 18,
     }).addTo(map);
@@ -203,9 +202,6 @@ export default function Map({ bars, selectedDate, onBarClick }) {
     updateMarkers();
   }, [updateMarkers]);
 
-  // Sun direction indicator overlay
-  const canvasRef = useRef(null);
-
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map) return;
@@ -246,9 +242,9 @@ function SunCompass({ selectedDate }) {
         bottom: '56px',
         left: '16px',
         zIndex: 1000,
-        background: 'rgba(10,15,30,0.85)',
+        background: 'rgba(247,244,238,0.92)',
         backdropFilter: 'blur(12px)',
-        border: '1px solid rgba(255,255,255,0.1)',
+        border: '1px solid rgba(0,0,0,0.08)',
         borderRadius: '14px',
         padding: '10px 12px',
         display: 'flex',
@@ -260,7 +256,7 @@ function SunCompass({ selectedDate }) {
     >
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
         {/* Compass ring */}
-        <circle cx={cx} cy={cy} r={r + 2} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+        <circle cx={cx} cy={cy} r={r + 2} fill="none" stroke="rgba(0,0,0,0.08)" strokeWidth="1" />
         {/* Cardinal labels */}
         {[['N', 0, -1], ['S', 0, 1], ['E', 1, 0], ['O', -1, 0]].map(([label, dx, dy]) => (
           <text
@@ -268,7 +264,7 @@ function SunCompass({ selectedDate }) {
             x={cx + (r + 8) * dx}
             y={cy + (r + 8) * dy + (dy !== 0 ? 4 : 0)}
             textAnchor="middle"
-            fill="rgba(255,255,255,0.2)"
+            fill="rgba(0,0,0,0.25)"
             fontSize="7"
             fontFamily="DM Sans, sans-serif"
             fontWeight="500"
@@ -293,7 +289,7 @@ function SunCompass({ selectedDate }) {
             <circle cx={cx} cy={cy} r="3" fill="rgba(255,213,79,0.3)" />
           </>
         ) : (
-          <text x={cx} y={cy + 5} textAnchor="middle" fill="rgba(255,255,255,0.2)" fontSize="10">—</text>
+          <text x={cx} y={cy + 5} textAnchor="middle" fill="rgba(0,0,0,0.2)" fontSize="10">—</text>
         )}
       </svg>
       <div style={{ fontSize: '9px', color: 'rgba(255,255,255,0.3)', textAlign: 'center', letterSpacing: '0.04em', lineHeight: 1.3 }}>
