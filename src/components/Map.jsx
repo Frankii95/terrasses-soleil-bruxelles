@@ -129,6 +129,7 @@ export default function Map({ bars, selectedDate, onBarClick }) {
   const mapInstanceRef = useRef(null);
   const markersRef = useRef({});
   const tileLayerRef = useRef(null);
+  const osmbRef = useRef(null);
 
   // Initialize map
   useEffect(() => {
@@ -148,13 +149,28 @@ export default function Map({ bars, selectedDate, onBarClick }) {
       maxZoom: 18,
     }).addTo(map);
 
+    // OSMBuildings — ombres 3D des bâtiments (actif à partir du zoom 15)
+    if (window.OSMBuildings) {
+      const osmb = new window.OSMBuildings(map);
+      osmb.load('https://data.osmbuildings.org/0.2/anonymous/tile/{z}/{x}/{y}.json');
+      osmbRef.current = osmb;
+    }
+
     mapInstanceRef.current = map;
 
     return () => {
       map.remove();
       mapInstanceRef.current = null;
+      osmbRef.current = null;
     };
   }, []);
+
+  // Mettre à jour les ombres quand la date/heure change
+  useEffect(() => {
+    if (osmbRef.current) {
+      osmbRef.current.date(selectedDate);
+    }
+  }, [selectedDate]);
 
   // Update markers when bars or date changes
   const updateMarkers = useCallback(() => {
